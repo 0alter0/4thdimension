@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>4D Measuring</title>
+  <style>
+    body {
+      background: #0b0b0b;
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 100px;
+    }
+    input, select, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background: #1e90ff;
+      color: white;
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 30px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>4D Measuring</h1>
+
+  <div>
+    <input type="number" id="timeInput" placeholder="Enter time" />
+    <select id="unitSelect">
+      <option value="ns">Nanoseconds (ns)</option>
+      <option value="µs">Microseconds (µs)</option>
+      <option value="ms">Milliseconds (ms)</option>
+      <option value="s">Seconds (s)</option>
+      <option value="min">Minutes</option>
+      <option value="hr">Hours</option>
+      <option value="yr">Years</option>
+    </select>
+    <button onclick="calculateDistance()">Calculate</button>
+  </div>
+
+  <div id="output"></div>
+
+  <script>
+    function calculateDistance() {
+      const time = parseFloat(document.getElementById("timeInput").value);
+      const unit = document.getElementById("unitSelect").value;
+
+      if (isNaN(time) || time <= 0) {
+        document.getElementById("output").innerText = "Please enter a valid positive time value.";
+        return;
+      }
+
+      const c = 299792458; // m/s
+      const conversions = {
+        ns: 1e-9,
+        µs: 1e-6,
+        ms: 1e-3,
+        s: 1,
+        min: 60,
+        hr: 3600,
+        yr: 31556952
+      };
+
+      const seconds = time * (conversions[unit] || 1);
+      const meters = c * seconds;
+      const feet = meters * 3.28084;
+      const miles = feet / 5280;
+
+      document.getElementById("output").innerHTML = `
+        <strong>Light travels:</strong><br>
+        ${meters.toFixed(3)} meters<br>
+        ${feet.toFixed(2)} feet<br>
+        ${miles.toFixed(6)} miles
+      `;
+    }
+  </script>
+
+</body>
+</html>
